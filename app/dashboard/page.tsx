@@ -85,8 +85,8 @@ export default function Dashboard() {
             &gt; {log}
           </div>
         ))}
-        {logs.length === 10 && (
-          <div className="animate-pulse text-yellow-500 mt-4">
+        {logs.length >= 11 && (
+          <div className="text-yellow-500 mt-4 animate-pulse">
             &gt; Process hanging...
           </div>
         )}
