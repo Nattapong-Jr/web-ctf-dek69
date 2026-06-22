@@ -66,11 +66,11 @@ export default function Dashboard() {
             SYSTEM OVERRIDE SUCCESS.
           </h1>
           <h2 className="text-xl md:text-2xl text-green-300">
-            WELCOME TO THE FAMILY.
+            WELCOME TO SIET.
           </h2>
           <div className="mt-8 border border-green-500 p-4 inline-block bg-black/80">
             <p>Admin Contact Info Unlocked.</p>
-            <p>Discord: nattapong_admin</p>
+            <p>Instagram: pi__3.14285</p>
           </div>
         </div>
       </div>
