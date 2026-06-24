@@ -8,14 +8,16 @@ export default function WelcomePage() {
   const [displayedText, setDisplayedText] = useState("");
   const [showButton, setShowButton] = useState(false);
 
-  const fullText = "ขอต้อนรับสู่สายรหัส ผมซ้อนคำใบ้ดีๆ เอาไว้ในนี้แหละ\nพยายามเข้าล่ะ ลองใช้ความรู้ทางคอมพิวเตอร์หาให้เจอดูสิ";
+  const fullText = "ขอต้อนรับสู่สายรหัส ผมซ่อนคำใบ้ดีๆ เอาไว้ในนี้แหละ\nพยายามเข้าล่ะ ลองใช้ความรู้ทางคอมพิวเตอร์หาให้เจอดูสิ";
 
   useEffect(() => {
     let index = 0;
     const interval = setInterval(() => {
-      setDisplayedText((prev) => prev + fullText.charAt(index));
-      index++;
-      if (index === fullText.length) {
+      if (index < fullText.length) {
+        const char = fullText.charAt(index);
+        setDisplayedText((prev) => prev + char);
+        index++;
+      } else {
         clearInterval(interval);
         setTimeout(() => setShowButton(true), 1000); // fade in button after a short delay
       }
