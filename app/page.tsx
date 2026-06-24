@@ -1,86 +1,45 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { Terminal } from "lucide-react";
 
-export default function Home() {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
+export default function WelcomePage() {
   const router = useRouter();
+  const [displayedText, setDisplayedText] = useState("");
+  const [showButton, setShowButton] = useState(false);
 
-  const handleLogin = (e: React.FormEvent) => {
-    e.preventDefault();
+  const fullText = "ขอต้อนรับสู่สายรหัส ผมซ้อนคำใบ้ดีๆ เอาไว้ในนี้แหละ\nพยายามเข้าล่ะ ลองใช้ความรู้ทางคอมพิวเตอร์หาให้เจอดูสิ";
 
-    // Expanded SQLi regex matches for the CTF
-    const sqliPatterns = [
-      /('|").*\s*OR\s*.+(=|LIKE).+/i,                     // OR tautologies (e.g. ' OR 1=1, " OR "a"="a")
-      /('|")\s*(--|#|\/\*)/i,                             // Comment injections (e.g. admin' --)
-      /\bUNION\s+(ALL\s+)?SELECT\b/i,                     // UNION queries
-      /;\s*(DROP|INSERT|UPDATE|DELETE|SLEEP|WAITFOR)\b/i, // Stacked queries & blind SQLi
-      /('|")\s*OR\s+true\b/i                              // Boolean OR true
-    ];
+  useEffect(() => {
+    let index = 0;
+    const interval = setInterval(() => {
+      setDisplayedText((prev) => prev + fullText.charAt(index));
+      index++;
+      if (index === fullText.length) {
+        clearInterval(interval);
+        setTimeout(() => setShowButton(true), 1000); // fade in button after a short delay
+      }
+    }, 50); // Typing speed
 
-    const isSqli = sqliPatterns.some(pattern => pattern.test(username) || pattern.test(password));
-
-    if (isSqli) {
-      router.push("/dashboard");
-    } else {
-      setError("Access Denied: Invalid credentials");
-    }
-  };
+    return () => clearInterval(interval);
+  }, []);
 
   return (
-    <div className="min-h-screen bg-black text-green-500 font-mono flex flex-col items-center justify-center p-4 relative">
-      <div className="w-full max-w-md border border-green-500 p-6 rounded-sm bg-black/50 shadow-[0_0_15px_rgba(34,197,94,0.2)]">
-        <div className="flex items-center gap-3 mb-8 border-b border-green-500/50 pb-4">
-          <Terminal size={28} />
-          <h1 className="text-2xl tracking-widest font-bold">SECURE_GATE_v2.1</h1>
+    <div className="min-h-screen bg-black text-green-500 font-mono flex flex-col items-center justify-center p-6 relative overflow-hidden">
+      <div className="max-w-2xl text-center flex flex-col items-center gap-12">
+        <div className="text-lg md:text-2xl leading-relaxed tracking-wide min-h-[100px] text-green-500 whitespace-pre-line">
+          {displayedText}
+          <span className="animate-pulse">_</span>
         </div>
 
-        <form onSubmit={handleLogin} className="space-y-6">
-          <div className="space-y-2">
-            <label className="block text-sm">USER_ID:</label>
-            <input
-              type="text"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-              className="w-full bg-black border border-green-500/50 p-2 outline-none focus:border-green-400 focus:ring-1 focus:ring-green-400 text-green-400 transition-colors"
-              autoComplete="off"
-              spellCheck="false"
-            />
-          </div>
-
-          <div className="space-y-2">
-            <label className="block text-sm">AUTH_KEY:</label>
-            <input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="w-full bg-black border border-green-500/50 p-2 outline-none focus:border-green-400 focus:ring-1 focus:ring-green-400 text-green-400 transition-colors"
-            />
-          </div>
-
+        <div className={`transition-opacity duration-1000 ${showButton ? "opacity-100" : "opacity-0 pointer-events-none"}`}>
           <button
-            type="submit"
-            className="w-full border border-green-500 hover:bg-green-500 hover:text-black py-2 font-bold transition-all duration-200"
+            onClick={() => router.push("/login")}
+            className="border border-green-500 bg-transparent text-green-500 hover:text-green-400 py-3 px-8 text-sm md:text-base font-bold tracking-widest uppercase transition-all duration-300 hover:shadow-[0_0_15px_rgba(34,197,94,0.6)] focus:outline-none"
           >
-            [ EXECUTE LOGIN ]
+            [ INITIATE_SYSTEM // ถัดไป ]
           </button>
-
-          {error && (
-            <div className="mt-4 text-red-500 animate-pulse text-center">
-              {error}
-            </div>
-          )}
-        </form>
-      </div>
-
-      {/* Clue */}
-      <div className="mt-12 text-green-400 text-sm md:text-base tracking-widest text-center max-w-md border border-dashed border-green-500/50 p-4 bg-green-900/10">
-        [ SYSTEM_HINT ]<br />
-        Use your knowledge of SQL injection.
+        </div>
       </div>
     </div>
   );
