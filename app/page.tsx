@@ -8,7 +8,7 @@ export default function WelcomePage() {
   const [displayedText, setDisplayedText] = useState("");
   const [showButton, setShowButton] = useState(false);
 
-  const fullText = "ขอต้อนรับสู่สายรหัส ผมซ่อนคำใบ้ดีๆ เอาไว้ในนี้แหละ\nพยายามเข้าล่ะ ลองใช้ความรู้ทางคอมพิวเตอร์หาให้เจอดูสิ";
+  const fullText = "ขอต้อนรับสู่สายรหัส เราซ่อนคำใบ้ดีๆ เอาไว้ในนี้แหละ\nพยายามเข้าล่ะ ลองใช้ความรู้ทางคอมพิวเตอร์หาให้เจอดูสิ";
 
   useEffect(() => {
     let index = 0;
